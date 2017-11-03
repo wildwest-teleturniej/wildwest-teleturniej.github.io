@@ -15,7 +15,7 @@ module.exports = {
       {
         loader: 'babel-loader',
         exclude: /node_modules/,
-        test: /\.js$/,
+        test: /\.js?$/,
         options: {
           presets: [
             ['env', {modules: false, targets: {browsers: ['last 2 versions']}}],
