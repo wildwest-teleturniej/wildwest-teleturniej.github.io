@@ -1,14 +1,18 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
+import Question from './Question.js'
 import QRCodeReader from './QRCodeReader.js'
-const App = () => (
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {Switch} from 'react-router'
+const App = () =>
+<Router>
   <MuiThemeProvider>
     <div>
-      <AppBar title="Wild West Teleturniej - IIIF"/>
-      <QRCodeReader/>
+    <Route exact path='/' component={QRCodeReader}/>
+    <Route exact path='/question' component={Question}/>
     </div>
   </MuiThemeProvider>
-);
+</Router>
 
 export default App;
