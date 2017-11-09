@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js",
-    "deploy": "npm run build && bash deploy.sh",
-    "build": "cross-env NODE_ENV=production webpack -p --config webpack.config.js"
+    "deploy": "sh ./build/deploy.sh https://github.com/bibixx/wildwest-teleturniej.github.io/ master",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js"
   }
 }

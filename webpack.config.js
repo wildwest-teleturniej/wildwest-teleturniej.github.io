@@ -2,13 +2,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const FriendlyErrorsPlugin = require( "friendly-errors-webpack-plugin" );
 
 const config = {
 	context: __dirname + '/app',
   entry: [
-  	'./js/main.js',
+  	'./js/index.js',
 		"webpack/hot/only-dev-server",
     "webpack-dev-server/client?http://localhost:8080",
   ],
@@ -91,15 +90,6 @@ if (process.env.NODE_ENV === 'production') {
     })
   );
   config.plugins.push(
-    new OfflinePlugin({
-      relativePaths: false,
-      AppCache: false,
-      publicPath: '/',
-      excludes: ['*.txt', '*.svg', 'CNAME', '**/.DS_Store', 'images/*.*', 'images/touch/*.*', 'images/touch/*.*', '**/*.map'],
-      externals: ['/index.html?utm_source=homescreen', 'images/touch/favicon.ico', 'images/touch/favicon-16x16.png', 'images/touch/favicon-32x32.png', 'images/touch/apple-touch-icon.jpg', 'images/touch/android-chrome-512x512.png', 'images/touch/android-chrome-192x192.png', '/decoder.min.js']
-    })
-  );
-  config.plugins.push(
     new CopyWebpackPlugin([
       {
         from: {
@@ -109,9 +99,6 @@ if (process.env.NODE_ENV === 'production') {
         to: __dirname + '/dist'
       },
       { from: __dirname + '/app/decoder.min.js', to:  __dirname + '/dist/' },
-      { from: __dirname + '/app/manifest.json', to:  __dirname + '/dist/' },
-      { from: __dirname + '/CNAME', to:  __dirname + '/dist/' },
-      { from: __dirname + '/robots.txt', to:  __dirname + '/dist/' }
     ])
   );
   config.plugins.push(

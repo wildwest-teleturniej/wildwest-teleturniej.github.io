@@ -22,7 +22,8 @@ export default class App extends React.Component {
 
   scan() {
     QRReader.scan((result) => {
-      console.log( result );
+      alert( result );
+      this.scan();
     });
   }
 
