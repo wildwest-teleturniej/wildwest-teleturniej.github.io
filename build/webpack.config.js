@@ -4,15 +4,17 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require( "friendly-errors-webpack-plugin" );
 
+const dirname = __dirname + "/..";
+
 const config = {
-	context: __dirname + '/app',
+	context: dirname + '/app',
   entry: [
   	'./js/index.js',
 		"webpack/hot/only-dev-server",
     "webpack-dev-server/client?http://localhost:8080",
   ],
   output: {
-    path: __dirname + '/dist',
+    path: dirname + '/dist',
     filename: 'bundle.[hash].js'
   },
 
@@ -20,7 +22,7 @@ const config = {
 		hot: true,
     // overlay: true,
     quiet: true,
-    contentBase: __dirname + '/app',
+    contentBase: dirname + '/app',
   },
 
   module: {
@@ -68,8 +70,8 @@ const config = {
       allChunks: true,
     }),
     new HtmlWebpackPlugin({
-      template: __dirname + '/app/index.html',
-      filename: __dirname + '/dist/index.html',
+      template: dirname + '/app/index.html',
+      filename: dirname + '/dist/index.html',
       minify: { collapseWhitespace: true }
     }),
 		new FriendlyErrorsPlugin(),
@@ -91,7 +93,7 @@ if (process.env.NODE_ENV === 'production') {
   );
   config.plugins.push(
     new CopyWebpackPlugin([
-      { from: __dirname + '/app/decoder.min.js', to:  __dirname + '/dist/' },
+      { from: dirname + '/app/decoder.min.js', to:  dirname + '/dist/' },
     ])
   );
   config.plugins.push(
