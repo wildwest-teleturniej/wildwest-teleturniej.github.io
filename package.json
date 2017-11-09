@@ -32,8 +32,8 @@
     "webpack-dev-server": "2.2.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js",
+    "start": "webpack-dev-server --config ./build/webpack.config.js",
     "deploy": "sh ./build/deploy.sh https://github.com/bibixx/wildwest-teleturniej.github.io/ master",
-    "build": "rimraf ./dist/ && cross-env NODE_ENV=production webpack --config ./webpack.config.js"
+    "build": "rimraf ./dist/ && cross-env NODE_ENV=production webpack --config ./build/webpack.config.js"
   }
 }
