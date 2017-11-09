@@ -5,7 +5,7 @@
     "start": "webpack-dev-server --open --config ./build/webpack.dev.js",
     "deploy": "sh ./build/deploy.sh https://github.com/bibixx/wildwest-teleturniej.github.io/ master",
     "clean": "rimraf dist",
-    "build": "npm run clean && NODE_ENV=production webpack --config ./build/webpack.prod.js -p --progress"
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --config ./build/webpack.prod.js -p --progress"
   },
   "dependencies": {
     "history": "^4.7.2",
