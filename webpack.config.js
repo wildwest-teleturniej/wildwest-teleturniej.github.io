@@ -13,7 +13,7 @@ const config = {
   ],
   output: {
     path: __dirname + '/dist',
-    filename: 'bundle.js'
+    filename: 'bundle.[hash].js'
   },
 
   devServer: {
@@ -91,13 +91,6 @@ if (process.env.NODE_ENV === 'production') {
   );
   config.plugins.push(
     new CopyWebpackPlugin([
-      {
-        from: {
-          glob:  __dirname + '/app/images/**/*',
-          dot: true
-        },
-        to: __dirname + '/dist'
-      },
       { from: __dirname + '/app/decoder.min.js', to:  __dirname + '/dist/' },
     ])
   );

@@ -5,8 +5,9 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      // iOS: ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0,
-      iOS: true,
+      result: "",
+      iOS: ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0,
+      // iOS: true,
     }
   }
 
@@ -21,9 +22,21 @@ export default class App extends React.Component {
   }
 
   scan() {
-    QRReader.scan((result) => {
-      alert( result );
-      this.scan();
+    this.setState( {
+      result: "",
+    } );
+
+    QRReader.scan( (result) => {
+      console.log( result );
+      this.setState( {
+        result: result,
+      } );
+
+      if ( !this.state.iOS ) {
+        setTimeout(() => {
+          this.scan();
+        }, 1000)
+      }
     });
   }
 
@@ -64,6 +77,7 @@ export default class App extends React.Component {
   render() {
     return (
       <main>
+        <span>{ this.state.result }</span>
         { this.renderContent() }
       </main>
     )
