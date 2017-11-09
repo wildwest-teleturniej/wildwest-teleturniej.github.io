@@ -5,19 +5,19 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      iOS: ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0,
-      // iOS: true,
+      // iOS: ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0,
+      iOS: true,
     }
   }
 
   componentDidMount() {
-    QRReader.init( this.video, this.img, this.state.iOS );
+    QRReader.init( this.video, this.frame, this.state.iOS );
 
-    setTimeout(() => {
-      if (!this.state.iOS) {
+    if (!this.state.iOS) {
+      setTimeout(() => {
         this.scan();
-      }
-    }, 1000);
+      }, 1000);
+    }
   }
 
   scan() {
