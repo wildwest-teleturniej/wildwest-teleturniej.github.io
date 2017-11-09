@@ -1,23 +1,32 @@
 import React from "react";
-import QRReader from './vendor/qrscan.js';
+import QRReader from "./vendor/qrscan";
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       result: "",
-      iOS: ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0,
+      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
       // iOS: true,
-    }
+    };
   }
 
   componentDidMount() {
     QRReader.init( this.video, this.frame, this.state.iOS );
 
-    if (!this.state.iOS) {
-      setTimeout(() => {
+    if ( !this.state.iOS ) {
+      setTimeout( () => {
         this.scan();
-      }, 1000);
+      }, 1000 );
+    }
+  }
+
+  onInputChange = ( e ) => {
+    if ( e.target && e.target.files.length > 0 ) {
+      this.frame.className = "app__overlay";
+      this.frame.src = URL.createObjectURL( e.target.files[ 0 ] );
+
+      this.scan();
     }
   }
 
@@ -26,27 +35,18 @@ export default class App extends React.Component {
       result: "",
     } );
 
-    QRReader.scan( (result) => {
+    QRReader.scan( ( result ) => {
       console.log( result );
       this.setState( {
-        result: result,
+        result,
       } );
 
       if ( !this.state.iOS ) {
-        setTimeout(() => {
+        setTimeout( () => {
           this.scan();
-        }, 1000)
+        }, 1000 );
       }
-    });
-  }
-
-  onInputChange = ( e ) => {
-    if (e.target && e.target.files.length > 0) {
-      this.frame.className = 'app__overlay';
-      this.frame.src = URL.createObjectURL(e.target.files[0]);
-
-      this.scan();
-    }
+    } );
   }
 
   renderContent() {
@@ -57,21 +57,21 @@ export default class App extends React.Component {
           type="file"
           capture="camera"
           onChange={ this.onInputChange }
-          ref={ ( el ) => { this.img = el } }
+          ref={ ( el ) => { this.img = el; } }
         />,
         <img
+          alt="QR captured by user"
           key="frame"
-          ref={ ( el ) => { this.frame = el } }
-        />
-      ]
-    } else {
-      return [
-        <video
-          autoPlay
-          key="camera"
-          ref={ ( el ) => { this.video = el } }
-        /> ];
+          ref={ ( el ) => { this.frame = el; } }
+        />,
+      ];
     }
+    return [
+      <video
+        autoPlay
+        key="camera"
+        ref={ ( el ) => { this.video = el; } }
+      /> ];
   }
 
   render() {
@@ -80,6 +80,6 @@ export default class App extends React.Component {
         <span>{ this.state.result }</span>
         { this.renderContent() }
       </main>
-    )
+    );
   }
 }
