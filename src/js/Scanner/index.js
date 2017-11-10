@@ -9,13 +9,14 @@ export default class App extends React.Component {
     this.state = {
       result: "",
       warningVisible: false,
-      // iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
-      iOS: true,
+      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      noCamera: false,
+      // iOS: true,
     };
   }
 
   componentDidMount() {
-    QRReader.init( this.video, this.frame, this.state.iOS );
+    QRReader.init( this.video, this.frame, this.state.iOS, this.errorHandler );
 
     if ( !this.state.iOS ) {
       setTimeout( () => {
@@ -34,6 +35,20 @@ export default class App extends React.Component {
       this.frame.src = URL.createObjectURL( e.target.files[ 0 ] );
 
       this.scan();
+    }
+  }
+
+  errorHandler = ( err ) => {
+    console.error( err );
+    console.error( "Unable to open the camera, provide permission to access the camera" );
+
+    if ( !this.state.noCamera ) {
+      QRReader.stop();
+      this.setState( {
+        iOS: true,
+        noCamera: true,
+      } );
+      QRReader.init( this.video, this.frame, this.state.iOS, this.errorHandler );
     }
   }
 
@@ -101,7 +116,7 @@ export default class App extends React.Component {
           <label
             htmlFor="camera"
             className="btn"
-          >Użyj aparatu</label>
+          >{ this.state.noCamera ? "Załaduj plik" : "Użyj aparatu"}</label>
         </div>
       );
     }

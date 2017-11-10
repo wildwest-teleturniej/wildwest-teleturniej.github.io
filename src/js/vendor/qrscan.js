@@ -11,7 +11,10 @@ QRReader.setCanvas = () => {
   QRReader.ctx = QRReader.canvas.getContext( "2d" );
 };
 
-QRReader.init = ( video, img, isiOS ) => {
+QRReader.init = ( video, img, isiOS, showErrorMsg = ( err ) => {
+  console.error( err );
+  console.error( "Unable to open the camera, provide permission to access the camera" );
+} ) => {
   const baseurl = "";
   let streaming = false;
 
@@ -48,8 +51,7 @@ QRReader.init = ( video, img, isiOS ) => {
         QRReader.webcam.srcObject = stream;
       } )
 			.catch( ( err ) => {
-        console.log( "Error occurred ", err );
-        showErrorMsg();
+        showErrorMsg( err );
       } );
   }
 
@@ -90,13 +92,8 @@ QRReader.init = ( video, img, isiOS ) => {
       }
     } )
 		.catch( ( error ) => {
-      showErrorMsg();
-      console.error( "Error occurred : ", error );
+      showErrorMsg( err );
     } );
-  }
-
-  function showErrorMsg() {
-    console.error( "Unable to open the camera, provide permission to access the camera" );
   }
 };
 
