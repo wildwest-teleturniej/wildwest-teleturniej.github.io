@@ -21,7 +21,7 @@ module.exports = {
     overlay: true,
     quiet: true,
     historyApiFallback: true,
-    contentBase: __dirname + '/../src',
+    contentBase: `${ __dirname }/../src`,
   },
 
   devtool: "#cheap-module-eval-source-map",
