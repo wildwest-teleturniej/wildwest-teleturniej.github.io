@@ -8,4 +8,5 @@
 * [ ] Feedback po odpowiedzi (ok, nie ok)
 * [ ] Ikonka
 * [ ] Title
+* [ ] Google Analytics
 * [ ] PWA (?)
