@@ -3,8 +3,10 @@ import ReactDOM from "react-dom";
 import Scanner from "./Scanner/";
 import Question from "./Question/";
 import Coupon from "./Coupon/";
+import Shit from "./Shit/";
+import "./main.sass";
 
-const debug = true;
+const debug = false;
 const steps = [
   {
     id: 1,
@@ -15,7 +17,7 @@ const steps = [
     id: 2,
     desc: "gdzie nigdy nie zachodzi słońce",
     question: "Dokąd tupta nocą jeż?",
-    answer: "Po flaszkę",
+    answer: "Do monopolowego",
   },
 ];
 
@@ -42,11 +44,11 @@ class App extends React.Component {
       debug: window.location.hash === "#tusiepacz" || debug,
       currentStep,
       view: "scan",
-      questionCount: steps.length - availableAnswers.length,
+      questionCount: +localStorage.getItem( "questionsOK" ),
     };
   }
 
-  goToNextStep = () => {
+  goToNextStep = ( isValid ) => {
     steps.find( ( { id } ) => id === this.state.currentStep.id ).answered = true;
 
     const availableAnswers = steps.filter( ( { answered } ) => !answered );
@@ -61,15 +63,18 @@ class App extends React.Component {
       localStorage.setItem( "nextStep", -1 );
     }
 
+    const newCount = isValid ? this.state.questionCount + 1 : this.state.questionCount;
+    localStorage.setItem( "questionsOK", newCount );
+
     this.setState( {
       currentStep: newStep,
-      questionCount: this.state.questionCount + 1,
+      questionCount: newCount,
     } );
   }
 
   changeView = () => {
     this.setState( {
-      view: ( this.state.view === "scan" ) ? "answer" : "scan",
+      view: ( this.state.view === "scan" ) ? "question" : "scan",
     } );
   }
 
@@ -77,6 +82,15 @@ class App extends React.Component {
     if ( this.state.questionCount >= 2 ) {
       return (
         <Coupon
+          debug={ this.state.debug }
+        />
+      );
+    }
+
+    const availableAnswers = steps.filter( ( { answered } ) => !answered );
+    if ( availableAnswers.length <= 0 ) {
+      return (
+        <Shit
           debug={ this.state.debug }
         />
       );
@@ -90,7 +104,9 @@ class App extends React.Component {
           changeView={ this.changeView }
         />
       );
-    } else if ( this.state.view === "answer" ) {
+    }
+
+    if ( this.state.view === "question" ) {
       return (
         <Question
           debug={ this.state.debug }

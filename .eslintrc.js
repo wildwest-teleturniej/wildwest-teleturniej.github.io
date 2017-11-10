@@ -23,6 +23,7 @@ module.exports = {
     "import/no-commonjs": ["error", "always"],
     "import/prefer-default-export": 0,
 
+    "jsx-a11y/label-has-for": 0,
     "jsx-a11y/href-no-hash": 0,
     "jsx-a11y/media-has-caption": 0,
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class Coupon extends React.Component {
+export default class Shit extends React.Component {
   clearData = () => {
     localStorage.removeItem( "usedAnsweres" );
     localStorage.removeItem( "nextStep" );
@@ -19,7 +19,7 @@ export default class Coupon extends React.Component {
   render() {
     return (
       <div className="flex flex-col justify-center h-full">
-        <h1 className="mb-4 text-center uppercase">Hej udało ci się! trzymaj tu zniżkę na żarcie w naszym teleturnieju!</h1>
+        <h1 className="mb-4 text-center uppercase">Sry mate you shit.</h1>
         { this.renderButton() }
       </div>
     );

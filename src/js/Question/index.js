@@ -2,10 +2,8 @@ import React from "react";
 
 export default class Question extends React.Component {
   checkAnswer = ( e ) => {
-    if ( this.input.value === this.props.answer ) {
-      this.props.goToNextStep();
-      this.props.changeView();
-    }
+    this.props.goToNextStep( this.input.value === this.props.answer );
+    this.props.changeView();
 
     e.preventDefault();
     return false;
@@ -34,10 +32,10 @@ export default class Question extends React.Component {
 
   render() {
     return (
-      <form onSubmit={ this.checkAnswer }>
-        <p>{ this.renderQuestion() }</p>
+      <form onSubmit={ this.checkAnswer } className="flex flex-col justify-center h-full">
+        <h1 className="mb-4 text-center uppercase">{ this.renderQuestion() }</h1>
         { this.renderInput() }
-        <button type="submit">Answer</button>
+        <button className="shadow-md btn" type="submit">Odpowiedz</button>
       </form>
     );
   }

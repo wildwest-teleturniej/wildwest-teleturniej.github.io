@@ -8,8 +8,9 @@ export default class App extends React.Component {
     super();
     this.state = {
       result: "",
-      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
-      // iOS: true,
+      warningVisible: false,
+      // iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      iOS: true,
     };
   }
 
@@ -25,6 +26,7 @@ export default class App extends React.Component {
 
   componentWillUnmount() {
     QRReader.stop();
+    clearTimeout( this.timeout );
   }
 
   onInputChange = ( e ) => {
@@ -37,14 +39,27 @@ export default class App extends React.Component {
 
   scan() {
     QRReader.scan( ( result ) => {
-      const resultSplit = result.split( "/" );
+      const resultSplit = result.split( "#" );
 
       this.setState( {
-        result,
+        result: "Ups! To chyba nie tu.",
+        warningVisible: true,
       } );
+
+      if ( this.timeout ) {
+        clearTimeout( this.timeout );
+      }
+
+      this.timeout = setTimeout( () => {
+        this.setState( {
+          warningVisible: false,
+        } );
+      }, 3000 );
 
       if ( +resultSplit[ resultSplit.length - 1 ] === this.props.currentStep.id ) {
         this.props.changeView();
+      } else {
+        console.log( result );
       }
 
       if ( !this.state.iOS ) {
@@ -56,7 +71,7 @@ export default class App extends React.Component {
   }
 
   nextstepFormatter() {
-    let text = `Idź tam ${ this.props.currentStep.desc }`;
+    let text = `${ this.props.currentStep.desc }`;
     if ( this.props.debug ) {
       text += ` (${ this.props.currentStep.id })`;
     }
@@ -66,20 +81,29 @@ export default class App extends React.Component {
 
   renderContent() {
     if ( this.state.iOS ) {
-      return [
-        <input
-          key="camera"
-          type="file"
-          capture="camera"
-          onChange={ this.onInputChange }
-          ref={ ( el ) => { this.img = el; } }
-        />,
-        <img
-          alt="QR captured by user"
-          key="frame"
-          ref={ ( el ) => { this.frame = el; } }
-        />,
-      ];
+      return (
+        <div className="input-cont">
+          <input
+            key="camera"
+            id="camera"
+            type="file"
+            capture="camera"
+            onChange={ this.onInputChange }
+            ref={ ( el ) => { this.img = el; } }
+          />
+
+          <img
+            alt=""
+            key="frame"
+            ref={ ( el ) => { this.frame = el; } }
+          />
+
+          <label
+            htmlFor="camera"
+            className="btn"
+          >Użyj aparatu</label>
+        </div>
+      );
     }
     return [
       <video
@@ -90,22 +114,34 @@ export default class App extends React.Component {
       /> ];
   }
 
+  renderWaring = () => {
+    let classes = "fullscreen-cont__text__warn";
+
+    if ( this.state.warningVisible ) {
+      classes += " fullscreen-cont__text__warn--visible";
+    }
+
+    return (
+      <p className={ classes }>
+        { this.state.result }
+      </p>
+    );
+  }
+
   render() {
     return (
-      <main>
-        <div className="fullscreen-cont">
-          { this.renderContent() }
-          <div className="fullscreen-cont__text">
-            <p className="debug fullscreen-cont__text__qr">
-              { this.state.result }
-            </p>
-            <p className="fullscreen-cont__text__goto">
-              { this.nextstepFormatter() }
-            </p>
-            <p>
-              I zeskanuj tam kod QR
-            </p>
-          </div>
+      <main className={ !this.state.iOS ? "fullscreen-cont" : "flex flex-col justify-between h-full" }>
+        { this.renderContent() }
+        <div className="fullscreen-cont__text">
+          { this.renderWaring() }
+          <p>
+            <small>
+              zeskanuj kod qr tam,
+            </small>
+          </p>
+          <p className="fullscreen-cont__text__goto">
+            { this.nextstepFormatter() }
+          </p>
         </div>
       </main>
     );

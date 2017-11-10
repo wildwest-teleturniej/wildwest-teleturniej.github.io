@@ -1,9 +1,15 @@
 .fullscreen-cont
+  .fullscreen-cont__text
+    position: absolute
+    bottom: 0
+
+.fullscreen-cont
   position: absolute
   top: 0
   left: 0
   width: 100vw
   height: 100vh
+  overflow: hidden
 
   &__video
     position: absolute
@@ -14,11 +20,32 @@
     min-height: 100vh
 
   &__text
-    position: absolute
-    bottom: 16px
     width: 100%
     text-align: center
     display: block
-    font-size: 24px
+    font-size: 2rem
+    text-transform: uppercase
     color: #fff
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.66)
+    padding: 4vw 16px
+    box-sizing: border-box
+
+    &__warn
+      color: #f00
+      opacity: 0
+      transition: opacity .2s ease-in-out
+
+      &--visible
+        opacity: 1
+
+    p
+      margin: 0
+
+.input-cont
+  input[type="file"], img
+    opacity: 0
+    width: 0px
+    height: 0px
+    position: absolute
+    top: -99999px
+    left: -99999px

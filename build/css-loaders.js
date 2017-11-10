@@ -1,5 +1,6 @@
 /* eslint-disable import/no-commonjs, import/no-extraneous-dependencies */
 const autoprefixer = require( "autoprefixer" );
+const tailwindcss = require( "tailwindcss" );
 
 module.exports = iP => [
   {
@@ -13,6 +14,7 @@ module.exports = iP => [
       sourceMap: !iP,
       plugins: () => [
         autoprefixer(),
+        tailwindcss( "./tailwind.js" ),
       ],
     },
   }, {
