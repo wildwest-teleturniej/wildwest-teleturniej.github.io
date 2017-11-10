@@ -19,14 +19,15 @@ export default class App extends React.Component {
     QRReader.init( this.video, this.frame, this.state.iOS, this.errorHandler );
 
     if ( !this.state.iOS ) {
-      setTimeout( () => {
+      this.scanTimeout = setTimeout( () => {
         this.scan();
       }, 1000 );
     }
   }
 
   componentWillUnmount() {
-    QRReader.stop();
+    QRReader.paused = true;
+    clearTimeout( this.scanTimeout );
     clearTimeout( this.timeout );
   }
 
@@ -78,7 +79,7 @@ export default class App extends React.Component {
       }
 
       if ( !this.state.iOS ) {
-        setTimeout( () => {
+        this.scanTimeout = setTimeout( () => {
           this.scan();
         }, 1000 );
       }

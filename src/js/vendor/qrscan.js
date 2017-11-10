@@ -1,5 +1,6 @@
 const QRReader = {};
 
+QRReader.paused = false;
 QRReader.active = false;
 QRReader.webcam = null;
 QRReader.canvas = null;
@@ -17,6 +18,8 @@ QRReader.init = ( video, img, isiOS, showErrorMsg = ( err ) => {
 } ) => {
   const baseurl = "";
   let streaming = false;
+
+  QRReader.paused = false;
 
 	// Init Webcam + Canvas
   if ( !isiOS ) {
@@ -104,6 +107,10 @@ QRReader.init = ( video, img, isiOS, showErrorMsg = ( err ) => {
  * \param A function(scan_result)
  */
 QRReader.scan = function ( callback ) {
+  if (QRReader.paused) {
+    return;
+  }
+
   QRReader.active = true;
   QRReader.setCanvas();
   function onDecoderMessage( event ) {
