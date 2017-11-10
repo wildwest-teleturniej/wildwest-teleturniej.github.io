@@ -2,33 +2,67 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Scanner from "./Scanner/";
 import Question from "./Question/";
+import Coupon from "./Coupon/";
 
+const debug = true;
 const steps = [
   {
     id: 1,
     desc: "gdzie zło się dzieje",
     question: "Ile jest portretów na 2 piętrze?",
+    answer: "12",
   }, {
     id: 2,
     desc: "gdzie nigdy nie zachodzi słońce",
     question: "Dokąd tupta nocą jeż?",
+    answer: "Po flaszkę",
   },
 ];
+
+try {
+  JSON.parse( localStorage.getItem( "usedAnsweres" ) ).forEach( ( usedId ) => {
+    steps.find( ( { id } ) => id === usedId ).answered = true;
+  } );
+} catch ( e ) {
+  if ( e.message !== "Cannot read property 'forEach' of null" ) {
+    console.error( e );
+  }
+}
+
+const getRandomEl = arr => arr[ Math.floor( Math.random() * arr.length ) ];
 
 class App extends React.Component {
   constructor() {
     super();
+    const availableAnswers = steps.filter( ( { answered } ) => !answered );
+
+    const currentStep = steps.find( ( { id } ) => id === +localStorage.getItem( "nextStep" ) ) || getRandomEl( availableAnswers );
+
     this.state = {
-      debug: true,
-      currentStep: steps[ Math.floor( Math.random() * steps.length ) ],
+      debug: window.location.hash === "#tusiepacz" || debug,
+      currentStep,
       view: "scan",
-      questionCount: 0,
+      questionCount: steps.length - availableAnswers.length,
     };
   }
 
   goToNextStep = () => {
+    steps.find( ( { id } ) => id === this.state.currentStep.id ).answered = true;
+
+    const availableAnswers = steps.filter( ( { answered } ) => !answered );
+
+    localStorage.setItem( "usedAnsweres", JSON.stringify( steps.filter( ( { answered } ) => answered ).map( ( ( { id } ) => id ) ) ) );
+
+    const newStep = getRandomEl( availableAnswers );
+
+    if ( newStep ) {
+      localStorage.setItem( "nextStep", newStep.id );
+    } else {
+      localStorage.setItem( "nextStep", -1 );
+    }
+
     this.setState( {
-      currentStep: steps[ ( this.state.currentStep.id === 1 ) ? 1 : 0 ],
+      currentStep: newStep,
       questionCount: this.state.questionCount + 1,
     } );
   }
@@ -42,7 +76,9 @@ class App extends React.Component {
   render() {
     if ( this.state.questionCount >= 2 ) {
       return (
-        <p>Hej udało ci się! trzymaj tu zniżkę na żarcie w naszym teleturnieju!</p>
+        <Coupon
+          debug={ this.state.debug }
+        />
       );
     }
 
@@ -57,6 +93,7 @@ class App extends React.Component {
     } else if ( this.state.view === "answer" ) {
       return (
         <Question
+          debug={ this.state.debug }
           question={ this.state.currentStep.question }
           answer={ this.state.currentStep.answer }
           changeView={ this.changeView }

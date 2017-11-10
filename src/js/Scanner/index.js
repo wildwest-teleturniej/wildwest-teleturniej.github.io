@@ -9,6 +9,7 @@ export default class App extends React.Component {
     this.state = {
       result: "",
       iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      // iOS: true,
     };
   }
 
@@ -23,7 +24,7 @@ export default class App extends React.Component {
   }
 
   componentWillUnmount() {
-    QRReader.decoder.terminate();
+    QRReader.stop();
   }
 
   onInputChange = ( e ) => {
@@ -37,8 +38,6 @@ export default class App extends React.Component {
   scan() {
     QRReader.scan( ( result ) => {
       const resultSplit = result.split( "/" );
-      console.log( resultSplit[ resultSplit.length - 1 ] );
-
 
       this.setState( {
         result,
@@ -57,10 +56,12 @@ export default class App extends React.Component {
   }
 
   nextstepFormatter() {
+    let text = `Idź tam ${ this.props.currentStep.desc }`;
     if ( this.props.debug ) {
-      return `Idź tam ${ this.props.currentStep.desc } (${ this.props.currentStep.id })`;
+      text += ` (${ this.props.currentStep.id })`;
     }
-    return `Idź tam ${ this.props.currentStep.desc }`;
+
+    return text;
   }
 
   renderContent() {
@@ -100,6 +101,9 @@ export default class App extends React.Component {
             </p>
             <p className="fullscreen-cont__text__goto">
               { this.nextstepFormatter() }
+            </p>
+            <p>
+              I zeskanuj tam kod QR
             </p>
           </div>
         </div>

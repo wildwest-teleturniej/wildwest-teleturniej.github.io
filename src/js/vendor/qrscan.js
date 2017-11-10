@@ -45,54 +45,54 @@ QRReader.init = ( video, img, isiOS ) => {
   function startCapture( constraints ) {
     navigator.mediaDevices.getUserMedia( constraints )
 			.then( ( stream ) => {
-  QRReader.webcam.srcObject = stream;
-} )
+        QRReader.webcam.srcObject = stream;
+      } )
 			.catch( ( err ) => {
-  console.log( "Error occurred ", err );
-  showErrorMsg();
-} );
+        console.log( "Error occurred ", err );
+        showErrorMsg();
+      } );
   }
 
   if ( !isiOS ) {
     navigator.mediaDevices.enumerateDevices()
 			.then( ( devices ) => {
-  const device = devices.filter( ( device ) => {
-    const deviceLabel = device.label.split( "," )[ 1 ];
-    if ( device.kind == "videoinput" ) {
-      return device;
-    }
-  } );
+        const device = devices.filter( ( device ) => {
+        const deviceLabel = device.label.split( "," )[ 1 ];
+        if ( device.kind == "videoinput" ) {
+          return device;
+        }
+      } );
 
-  if ( device.length > 1 ) {
-    var constraints = {
-      video: {
-        mandatory: {
-          sourceId: device[ 1 ].deviceId ? device[ 1 ].deviceId : null,
-        },
-      },
-      audio: false,
-    };
+      if ( device.length > 1 ) {
+        var constraints = {
+          video: {
+            mandatory: {
+              sourceId: device[ 1 ].deviceId ? device[ 1 ].deviceId : null,
+            },
+          },
+          audio: false,
+        };
 
-    startCapture( constraints );
-  }				else if ( device.length ) {
-    var constraints = {
-      video: {
-        mandatory: {
-          sourceId: device[ 0 ].deviceId ? device[ 0 ].deviceId : null,
-        },
-      },
-      audio: false,
-    };
+        startCapture( constraints );
+      }	else if ( device.length ) {
+        var constraints = {
+          video: {
+            mandatory: {
+              sourceId: device[ 0 ].deviceId ? device[ 0 ].deviceId : null,
+            },
+          },
+          audio: false,
+        };
 
-    startCapture( constraints );
-  }				else {
-    startCapture( { video: true } );
-  }
-} )
-			.catch( ( error ) => {
-  showErrorMsg();
-  console.error( "Error occurred : ", error );
-} );
+        startCapture( constraints );
+      }	else {
+        startCapture( { video: true } );
+      }
+    } )
+		.catch( ( error ) => {
+      showErrorMsg();
+      console.error( "Error occurred : ", error );
+    } );
   }
 
   function showErrorMsg() {
@@ -138,5 +138,15 @@ QRReader.scan = function ( callback ) {
   }
   newDecoderFrame();
 };
+
+QRReader.stop = () => {
+  if ( QRReader.webcam.srcObject ) {
+    QRReader.webcam.srcObject.getTracks().forEach( track => {
+      track.stop();
+    } )
+  }
+
+  QRReader.decoder.terminate();
+}
 
 module.exports = QRReader;
