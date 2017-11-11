@@ -11,7 +11,6 @@ export default class Question extends React.Component {
   checkAnswer = ( e ) => {
     if ( this.input.value.toLowerCase() === this.props.answer.toLowerCase() ) {
       this.props.goToNextStep( true );
-      this.props.changeView();
     } else {
       this.setState( {
         error: true,

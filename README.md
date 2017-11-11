@@ -3,8 +3,7 @@
 * [ ] Ekran po dostaniu kuponu
   * [ ] jakiś obrazek
   * [ ] losowy kupon (?)
-  * [ ] magic qr
-
+  * [x] magic qr
 * [ ] Ekran po przegraniu
 * [ ] Feedback po odpowiedzi (ok, nie ok)
 * [ ] Ikonka
@@ -12,3 +11,4 @@
 * [ ] Google Analytics
 * [ ] PWA (?)
 * [ ] Cookie notice
+* [ ] Hash instead of id in qrcodes

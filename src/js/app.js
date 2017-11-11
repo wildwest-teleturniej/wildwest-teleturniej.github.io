@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Scanner from "./Scanner/";
 import Question from "./Question/";
 import Coupon from "./Coupon/";
+import End from "./End/";
 
 import setup from "./setup.json";
 import "./main.sass";
@@ -34,10 +35,28 @@ class App extends React.Component {
       view: "scan",
       // view: "question",
       questionCount: +localStorage.getItem( "questionsOK" ),
+      isEnd: localStorage.getItem( "isEnd" ) === "true",
     };
+
+    if ( this.state.questionCount >= 2 ) {
+      this.state.view = "coupon";
+    }
   }
 
   goToNextStep = ( isValid ) => {
+    const newCount = isValid ? this.state.questionCount + 1 : this.state.questionCount;
+    localStorage.setItem( "questionsOK", newCount );
+
+    if ( newCount >= 2 ) {
+      this.setState( {
+        view: "coupon",
+        questionCount: newCount,
+      } );
+
+      localStorage.setItem( "nextStep", -1 );
+      return;
+    }
+
     steps.find( ( { id } ) => id === this.state.currentStep.id ).answered = true;
 
     const availableAnswers = steps.filter( ( { answered } ) => !answered );
@@ -46,19 +65,14 @@ class App extends React.Component {
 
     const newStep = getRandomEl( availableAnswers );
 
-    if ( newStep ) {
-      localStorage.setItem( "nextStep", newStep.id );
-    } else {
-      localStorage.setItem( "nextStep", -1 );
-    }
-
-    const newCount = isValid ? this.state.questionCount + 1 : this.state.questionCount;
-    localStorage.setItem( "questionsOK", newCount );
+    localStorage.setItem( "nextStep", newStep.id );
 
     this.setState( {
       currentStep: newStep,
       questionCount: newCount,
     } );
+
+    this.changeView();
   }
 
   changeView = () => {
@@ -67,11 +81,28 @@ class App extends React.Component {
     } );
   }
 
+  endThis = () => {
+    localStorage.setItem( "isEnd", true );
+
+    this.setState( {
+      isEnd: true,
+    } );
+  }
+
   render() {
-    if ( this.state.questionCount >= 2 ) {
+    if ( this.state.isEnd ) {
+      return (
+        <End
+          debug={ this.state.debug }
+        />
+      );
+    }
+
+    if ( this.state.view === "coupon" ) {
       return (
         <Coupon
           debug={ this.state.debug }
+          changeView={ this.changeView }
         />
       );
     }
@@ -82,6 +113,8 @@ class App extends React.Component {
           debug={ this.state.debug }
           currentStep={ this.state.currentStep }
           changeView={ this.changeView }
+          scanMagic={ this.state.questionCount >= 2 }
+          endThis={ this.endThis }
         />
       );
     }
@@ -92,7 +125,6 @@ class App extends React.Component {
           debug={ this.state.debug }
           question={ this.state.currentStep.question }
           answer={ this.state.currentStep.answer }
-          changeView={ this.changeView }
           goToNextStep={ this.goToNextStep }
         />
       );

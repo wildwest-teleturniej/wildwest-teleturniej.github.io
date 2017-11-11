@@ -56,6 +56,7 @@ export default class App extends React.Component {
   scan() {
     QRReader.scan( ( result ) => {
       const resultSplit = result.split( "#" );
+      const resultID = resultSplit[ resultSplit.length - 1 ];
 
       this.setState( {
         result: "Ups! To chyba nie tu.",
@@ -72,7 +73,9 @@ export default class App extends React.Component {
         } );
       }, 3000 );
 
-      if ( +resultSplit[ resultSplit.length - 1 ] === this.props.currentStep.id ) {
+      if ( this.props.scanMagic && resultID === "end" ) {
+        this.props.endThis();
+      } else if ( +resultID === this.props.currentStep.id ) {
         this.props.changeView();
       } else {
         console.log( result );
@@ -87,6 +90,10 @@ export default class App extends React.Component {
   }
 
   nextstepFormatter() {
+    if ( this.props.scanMagic ) {
+      return "Zeskanuj kod u szeryfa.";
+    }
+
     let text = `${ this.props.currentStep.desc }`;
     if ( this.props.debug ) {
       text += ` (${ this.props.currentStep.id })`;
