@@ -36,7 +36,7 @@ module.exports = {
     new webpack.optimize.ModuleConcatenationPlugin(),
     ExtractSASS,
     new CopyWebpackPlugin( [
-      { from: "./src/decoder.min.js", to: "./" },
+      { context: "./static", from: "**/*", to: "./" },
     ] ),
   ],
 };

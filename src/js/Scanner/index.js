@@ -1,6 +1,5 @@
 import React from "react";
 import QRReader from "../vendor/qrscan";
-
 import "./scanner.sass";
 
 export default class App extends React.Component {
@@ -11,7 +10,6 @@ export default class App extends React.Component {
       warningVisible: false,
       iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
       noCamera: false,
-      // iOS: true,
     };
   }
 
