@@ -8,3 +8,4 @@
 * [x] Ikonka
 * [x] Title
 * [x] Google Analytics
+* [ ] Scanning other qrs while in ending mode
