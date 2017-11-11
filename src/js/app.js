@@ -3,23 +3,11 @@ import ReactDOM from "react-dom";
 import Scanner from "./Scanner/";
 import Question from "./Question/";
 import Coupon from "./Coupon/";
-import Shit from "./Shit/";
+
+import setup from "./setup.json";
 import "./main.sass";
 
-const debug = false;
-const steps = [
-  {
-    id: 1,
-    desc: "gdzie zło się dzieje",
-    question: "Ile jest portretów na 2 piętrze?",
-    answer: "12",
-  }, {
-    id: 2,
-    desc: "gdzie nigdy nie zachodzi słońce",
-    question: "Dokąd tupta nocą jeż?",
-    answer: "Do monopolowego",
-  },
-];
+const { steps, debug } = setup;
 
 try {
   JSON.parse( localStorage.getItem( "usedAnsweres" ) ).forEach( ( usedId ) => {
@@ -44,6 +32,7 @@ class App extends React.Component {
       debug: window.location.hash === "#tusiepacz" || debug,
       currentStep,
       view: "scan",
+      // view: "question",
       questionCount: +localStorage.getItem( "questionsOK" ),
     };
   }
@@ -82,15 +71,6 @@ class App extends React.Component {
     if ( this.state.questionCount >= 2 ) {
       return (
         <Coupon
-          debug={ this.state.debug }
-        />
-      );
-    }
-
-    const availableAnswers = steps.filter( ( { answered } ) => !answered );
-    if ( availableAnswers.length <= 0 ) {
-      return (
-        <Shit
           debug={ this.state.debug }
         />
       );

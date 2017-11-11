@@ -8,7 +8,7 @@ const common = require( "./common" );
 const { config, iP } = common;
 
 const ExtractSASSConfig = {
-  filename: "style.css",
+  filename: "style.[hash].css",
 };
 const ExtractSASS = new ExtractTextPlugin( ExtractSASSConfig );
 
@@ -35,8 +35,8 @@ module.exports = {
     ...config.plugins,
     new webpack.optimize.ModuleConcatenationPlugin(),
     ExtractSASS,
-    new CopyWebpackPlugin([
-      { from: './src/decoder.min.js', to: './' },
-    ])
+    new CopyWebpackPlugin( [
+      { from: "./src/decoder.min.js", to: "./" },
+    ] ),
   ],
 };

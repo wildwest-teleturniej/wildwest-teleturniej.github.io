@@ -2,7 +2,7 @@
   "name": "wildwest-teleturniej",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --open --config ./build/webpack.dev.js",
+    "start": "webpack-dev-server --config ./build/webpack.dev.js",
     "deploy": "sh ./build/deploy.sh https://github.com/wildwest-teleturniej/wildwest-teleturniej.github.io master",
     "clean": "rimraf dist",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --config ./build/webpack.prod.js -p --progress"

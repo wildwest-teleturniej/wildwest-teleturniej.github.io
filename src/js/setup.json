@@ -1,0 +1,16 @@
+{
+  "debug": false,
+  "steps": [
+    {
+      "id": 1,
+      "desc": "gdzie zło się dzieje",
+      "question": "Ile jest portretów na 2 piętrze?",
+      "answer": "12"
+    }, {
+      "id": 2,
+      "desc": "gdzie nigdy nie zachodzi słońce",
+      "question": "Dokąd tupta nocą jeż?",
+      "answer": "Do monopolowego"
+    }
+  ]
+}

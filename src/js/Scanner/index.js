@@ -131,10 +131,10 @@ export default class App extends React.Component {
   }
 
   renderWaring = () => {
-    let classes = "fullscreen-cont__text__warn";
+    let classes = "fullscreen-cont__text__warn opacity-0 text-red";
 
     if ( this.state.warningVisible ) {
-      classes += " fullscreen-cont__text__warn--visible";
+      classes += " opacity-100";
     }
 
     return (

@@ -1,5 +1,5 @@
 # TODO
-* [ ] Stylowanie inputów
+* [x] Stylowanie inputów
 * [ ] Ekran po dostaniu kuponu
   * [ ] jakiś obrazek
   * [ ] losowy kupon (?)
