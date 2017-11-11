@@ -10,7 +10,7 @@ module.exports = {
   entry: [
     ...config.entry,
     "webpack/hot/only-dev-server",
-    "webpack-dev-server/client?http://localhost:8080",
+    "webpack-dev-server/client?http://192.168.92.212:8080",
   ],
 
   output: config.output,

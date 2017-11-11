@@ -8,7 +8,8 @@ export default class App extends React.Component {
     this.state = {
       result: "",
       warningVisible: false,
-      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      // iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      iOS: true,
       noCamera: false,
     };
   }
@@ -31,6 +32,7 @@ export default class App extends React.Component {
 
   onInputChange = ( e ) => {
     if ( e.target && e.target.files.length > 0 ) {
+      console.log( 123 );
       this.frame.src = URL.createObjectURL( e.target.files[ 0 ] );
 
       this.scan();

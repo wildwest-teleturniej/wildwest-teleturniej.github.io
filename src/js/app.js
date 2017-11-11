@@ -8,17 +8,32 @@ import End from "./End/";
 import setup from "./setup.json";
 import "./main.sass";
 
-const { steps, debug } = setup;
+const { debug } = setup;
 
-try {
-  JSON.parse( localStorage.getItem( "usedAnsweres" ) ).forEach( ( usedId ) => {
-    steps.find( ( { id } ) => id === usedId ).answered = true;
-  } );
-} catch ( e ) {
-  if ( e.message !== "Cannot read property 'forEach' of null" ) {
-    console.error( e );
-  }
-}
+const steps = [
+  {
+    id: 1,
+    desc: "gdzie zło się dzieje",
+    question: "Ile jest portretów na 2 piętrze?",
+    answer: "12",
+  }, {
+    id: 2,
+    desc: "gdzie nigdy nie zachodzi słońce",
+    question: "Dokąd tupta nocą jeż?",
+    answer: "Do monopolowego",
+  },
+];
+
+// try {
+//   JSON.parse( localStorage.getItem( "usedAnsweres" ) ).forEach( ( usedId ) => {
+//     steps.find( ( { id } ) => id === usedId ).answered = true;
+//   } );
+// } catch ( e ) {
+//   if ( e.message !== "Cannot read property 'forEach' of null" ) {
+//     console.error( e );
+//   }
+// }
+
 
 const getRandomEl = arr => arr[ Math.floor( Math.random() * arr.length ) ];
 
