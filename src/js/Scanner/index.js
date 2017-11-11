@@ -8,8 +8,8 @@ export default class App extends React.Component {
     this.state = {
       result: "",
       warningVisible: false,
-      // iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
-      iOS: true,
+      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      // iOS: true,
       noCamera: false,
     };
   }
