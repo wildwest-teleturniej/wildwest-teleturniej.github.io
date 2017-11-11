@@ -11,3 +11,4 @@
 * [ ] Title
 * [ ] Google Analytics
 * [ ] PWA (?)
+* [ ] Cookie notice
