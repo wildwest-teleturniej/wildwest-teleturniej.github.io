@@ -8,8 +8,8 @@ export default class App extends React.Component {
     this.state = {
       result: "",
       warningVisible: false,
-      // iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
-      iOS: true,
+      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      // iOS: true,
       noCamera: false,
     };
   }
@@ -44,6 +44,7 @@ export default class App extends React.Component {
 
     const result = `#${ val }`;
 
+    console.log( result.toLowerCase() );
     this.scanResult( result );
 
     e.preventDefault();
@@ -87,7 +88,9 @@ export default class App extends React.Component {
       } );
     }, 3000 );
 
-    if ( this.props.scanMagic && resultID === "koniec" ) {
+    console.log( resultID.toUpperCase() === "KONIEC" );
+
+    if ( this.props.scanMagic && resultID.toUpperCase() === "KONIEC" ) {
       this.props.endThis();
     } else if (
       String( resultID ).toUpperCase() === String( this.props.currentStep.id ).toUpperCase()
