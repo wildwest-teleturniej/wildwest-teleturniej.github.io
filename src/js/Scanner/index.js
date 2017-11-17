@@ -8,8 +8,8 @@ export default class App extends React.Component {
     this.state = {
       result: "",
       warningVisible: false,
-      iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
-      // iOS: true,
+      // iOS: [ "iPad", "iPhone", "iPod" ].indexOf( navigator.platform ) >= 0,
+      iOS: true,
       noCamera: false,
     };
   }
@@ -39,6 +39,17 @@ export default class App extends React.Component {
     }
   }
 
+  onTextInputChange = ( e ) => {
+    const val = this.idInput.value;
+
+    const result = `#${ val }`;
+
+    this.scanResult( result );
+
+    e.preventDefault();
+    return false;
+  }
+
   errorHandler = ( err ) => {
     console.error( err );
     console.error( "Unable to open the camera, provide permission to access the camera" );
@@ -54,44 +65,48 @@ export default class App extends React.Component {
   }
 
   scan() {
-    QRReader.scan( ( result ) => {
-      const resultSplit = result.split( "#" );
-      const resultID = resultSplit[ resultSplit.length - 1 ];
+    QRReader.scan( this.scanResult );
+  }
 
-      this.setState( {
-        result: "Ups! To chyba nie tu.",
-        warningVisible: true,
-      } );
+  scanResult = ( result ) => {
+    const resultSplit = result.split( "#" );
+    const resultID = resultSplit[ resultSplit.length - 1 ];
 
-      if ( this.timeout ) {
-        clearTimeout( this.timeout );
-      }
-
-      this.timeout = setTimeout( () => {
-        this.setState( {
-          warningVisible: false,
-        } );
-      }, 3000 );
-
-      if ( this.props.scanMagic && resultID === "end" ) {
-        this.props.endThis();
-      } else if ( +resultID === this.props.currentStep.id ) {
-        this.props.changeView();
-      } else {
-        console.log( result );
-      }
-
-      if ( !this.state.iOS ) {
-        this.scanTimeout = setTimeout( () => {
-          this.scan();
-        }, 1000 );
-      }
+    this.setState( {
+      result: "Ups! To chyba nie tu.",
+      warningVisible: true,
     } );
+
+    if ( this.timeout ) {
+      clearTimeout( this.timeout );
+    }
+
+    this.timeout = setTimeout( () => {
+      this.setState( {
+        warningVisible: false,
+      } );
+    }, 3000 );
+
+    if ( this.props.scanMagic && resultID === "koniec" ) {
+      this.props.endThis();
+    } else if (
+      String( resultID ).toUpperCase() === String( this.props.currentStep.id ).toUpperCase()
+    ) {
+      this.props.changeView();
+    } else {
+      console.log( result );
+    }
+
+    if ( !this.state.iOS ) {
+      this.scanTimeout = setTimeout( () => {
+        this.scan();
+      }, 1000 );
+    }
   }
 
   nextstepFormatter() {
     if ( this.props.scanMagic ) {
-      return "Zeskanuj kod u szeryfa.";
+      return "„Zamknij świat na klucz i wróć do mnie. Żal za siebie rzuć i wróć do mnie. Wygnaj z serca chłód i wróć do mnie. Jak najkrótszą z dróg wróć do mnie – Sheriffa swojego”";
     }
 
     let text = `${ this.props.currentStep.desc }`;
@@ -115,16 +130,27 @@ export default class App extends React.Component {
             ref={ ( el ) => { this.img = el; } }
           />
 
-          <img
-            alt=""
-            key="frame"
-            ref={ ( el ) => { this.frame = el; } }
-          />
 
           <label
             htmlFor="camera"
             className="btn"
           >{ this.state.noCamera ? "Załaduj plik" : "Użyj aparatu"}</label>
+
+          <form onSubmit={ this.onTextInputChange }>
+            <input
+              type="text"
+              ref={ ( el ) => { this.idInput = el; } }
+              className="w-full"
+              placeholder="Tu wpisz kod spod obrazka"
+            />
+            <button className="btn" type="submit">Sprawdź</button>
+          </form>
+
+          <img
+            alt=""
+            key="frame"
+            ref={ ( el ) => { this.frame = el; } }
+          />
         </div>
       );
     }
@@ -157,11 +183,11 @@ export default class App extends React.Component {
         { this.renderContent() }
         <div className="fullscreen-cont__text">
           { this.renderWaring() }
-          <p>
+          {/* <p>
             <small>
               zeskanuj kod qr tam,
             </small>
-          </p>
+          </p> */}
           <p className="fullscreen-cont__text__goto">
             { this.nextstepFormatter() }
           </p>

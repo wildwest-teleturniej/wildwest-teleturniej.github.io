@@ -10,29 +10,45 @@ import "./main.sass";
 
 const { debug } = setup;
 
+const stepsRequired = 4;
 const steps = [
   {
-    id: 1,
-    desc: "gdzie zło się dzieje",
-    question: "Ile jest portretów na 2 piętrze?",
-    answer: "12",
+    id: "qyGyz",
+    desc: "Tu zasiadają Ziemscy bogowie, jacy są tego człowiek się dowie, w on czas gdy jeden w bramy zapuka, drugi zaś słowa liche wyduka",
+    question: "Angielskiego królowej z domu nazwisko, które czernią, grozą i strachem napełniało wszystko swoją wymową, choć w trzydziestej drugiej sali, uczniowie lingwistkę młodą zawżdy uwielbiali.",
+    answer: "Mroczek",
   }, {
-    id: 2,
-    desc: "gdzie nigdy nie zachodzi słońce",
-    question: "Dokąd tupta nocą jeż?",
-    answer: "Do monopolowego",
+    id: "drbqw",
+    desc: "„Nie starczy ust do wymówienia przelotnych imion twoich, wodo.”",
+    question: "Na tym piętrze mieszka zacny człowiek, po którego wieczystym zamknięciu powiek, przybyło na Zamek jego centrum rubinowe, pod Zygmunta czujne oczy brązowe",
+    answer: "Tadeusz Kościuszko",
+  }, {
+    id: "ZVCkh",
+    desc: "„Przenosi delikatną stopę nad żelaznym wałem. Niczym nieosłonięta kroczy wśród półnagich wysilonych mężczyzn o lśniących ramionach.”",
+    question: "O chorobie zakaźnej jest mowa, której nieznośnie, szerokie ramiona, we znaki się dają tutaj wokoło, choć liter ma tylko czworo",
+    answer: "AIDS",
+  }, {
+    id: "GXZTH",
+    desc: "„Podziwiano ją i wielbiono, ale z daleka; nikt bowiem nie chciał narażać się na przykrą odmowę”",
+    question: "Na Amaltei skórze napis widnieje: o tym jak szkoła jest wielka opowiada dzieje. I choć lakoniczność tekstu uderza w człowieka, to pracowano na niego od niemal ćwierćwieka. ",
+    answer: "Szkoła sukcesu",
+  }, {
+    id: "wEVKl",
+    desc: "Tam skąd Zefir przybywa pójdź człowiecze, Tam gdzie prawo strzału i lassa prym wiedzie. Weź swój kapelusz i konia i przybądź, gdzie wyceniona jest głowa twoja.",
+    question: "Dzisiaj przybrane są w większości klasy, choć codzień otwierają je nauczyciele., dziś uczestników bawią maturalne asy, a jak na tym piętrze teleturniejów jest wiele?",
+    answer: "4",
   },
 ];
 
-// try {
-//   JSON.parse( localStorage.getItem( "usedAnsweres" ) ).forEach( ( usedId ) => {
-//     steps.find( ( { id } ) => id === usedId ).answered = true;
-//   } );
-// } catch ( e ) {
-//   if ( e.message !== "Cannot read property 'forEach' of null" ) {
-//     console.error( e );
-//   }
-// }
+try {
+  JSON.parse( localStorage.getItem( "usedAnsweres" ) ).forEach( ( usedId ) => {
+    steps.find( ( { id } ) => id === usedId ).answered = true;
+  } );
+} catch ( e ) {
+  if ( e.message !== "Cannot read property 'forEach' of null" ) {
+    console.error( e );
+  }
+}
 
 
 const getRandomEl = arr => arr[ Math.floor( Math.random() * arr.length ) ];
@@ -53,7 +69,7 @@ class App extends React.Component {
       isEnd: localStorage.getItem( "isEnd" ) === "true",
     };
 
-    if ( this.state.questionCount >= 2 ) {
+    if ( this.state.questionCount >= stepsRequired ) {
       this.state.view = "coupon";
     }
   }
@@ -62,7 +78,7 @@ class App extends React.Component {
     const newCount = isValid ? this.state.questionCount + 1 : this.state.questionCount;
     localStorage.setItem( "questionsOK", newCount );
 
-    if ( newCount >= 2 ) {
+    if ( newCount >= stepsRequired ) {
       this.setState( {
         view: "coupon",
         questionCount: newCount,
@@ -128,7 +144,7 @@ class App extends React.Component {
           debug={ this.state.debug }
           currentStep={ this.state.currentStep }
           changeView={ this.changeView }
-          scanMagic={ this.state.questionCount >= 2 }
+          scanMagic={ this.state.questionCount >= stepsRequired }
           endThis={ this.endThis }
         />
       );
